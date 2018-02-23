@@ -1,11 +1,15 @@
 import React, { Component } from 'react';
-import { Text, View, TouchableWithoutFeedback } from 'react-native';
+import { Text, View, TouchableWithoutFeedback, LayoutAnimation } from 'react-native';
 import { connect } from 'react-redux';
 
 import { CardSection } from './common';
 import * as actions from '../actions';
 
 class ListItem extends Component {
+
+  componentWillUpdate () {
+    LayoutAnimation.easeInEaseOut();
+  }
 
   // helper functions
   dispatchSelectLibraryAction (arg) {
@@ -14,9 +18,14 @@ class ListItem extends Component {
 
   renderDescription () {
     const { libraryProp, expanded } = this.props;
+    const { descriptionTextStyle } = styles;
     if (expanded) {
       return (
-        <Text>{libraryProp.item.description}</Text>
+        <CardSection>
+          <Text style={descriptionTextStyle}>
+            {libraryProp.item.description}
+          </Text>
+        </CardSection>
       );
     }
 
@@ -49,6 +58,10 @@ const styles = {
   titleTextStyle: {
     fontSize: 20,
     paddingLeft: 20
+  },
+  descriptionTextStyle: {
+    paddingLeft: 20,
+    paddingRight: 20
   }
 };
 
