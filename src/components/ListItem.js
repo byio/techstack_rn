@@ -12,8 +12,18 @@ class ListItem extends Component {
     return () => this.props.selectLibrary(arg);
   }
 
+  renderDescription () {
+    const { libraryProp, expanded } = this.props;
+    if (expanded) {
+      return (
+        <Text>{libraryProp.item.description}</Text>
+      );
+    }
+
+  }
+
   render () {
-    // console.log(this.props);
+    // console.log(this.props.selectedLibraryId);
     const { title, id } = this.props.libraryProp.item;
     const { titleTextStyle } = styles;
     // console.log(libraryProp);
@@ -27,6 +37,7 @@ class ListItem extends Component {
               {title}
             </Text>
           </CardSection>
+          {this.renderDescription()}
         </View>
       </TouchableWithoutFeedback>
     );
@@ -42,8 +53,10 @@ const styles = {
 };
 
 // use mapStateToProps whenever a component needs to consume application level state
-const mapStateToProps = () => {
-
+const mapStateToProps = (state, ownProps) => {
+  // console.log(ownProps);
+  const expanded = state.selectedLibraryId === ownProps.libraryProp.item.id;
+  return { expanded };
 };
 
 export default connect(mapStateToProps, actions)(ListItem);
