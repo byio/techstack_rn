@@ -1,22 +1,34 @@
 import React, { Component } from 'react';
-import { Text, View } from 'react-native';
+import { Text, View, TouchableWithoutFeedback } from 'react-native';
+import { connect } from 'react-redux';
 
 import { CardSection } from './common';
+import * as actions from '../actions';
 
 class ListItem extends Component {
 
+  // helper functions
+  dispatchSelectLibraryAction (arg) {
+    return () => this.props.selectLibrary(arg);
+  }
+
   render () {
-    const { libraryProp } = this.props;
-    const { titleTextStyle, titleContainerStyle } = styles;
-    console.log(libraryProp);
+    // console.log(this.props);
+    const { title, id } = this.props.libraryProp.item;
+    const { titleTextStyle } = styles;
+    // console.log(libraryProp);
     return (
-      <CardSection>
-        <View style={titleContainerStyle}>
-          <Text style={ titleTextStyle }>
-            {libraryProp.item.title}
-          </Text>
+      <TouchableWithoutFeedback
+        onPress={this.dispatchSelectLibraryAction(id)}
+      >
+        <View>
+          <CardSection>
+            <Text style={ titleTextStyle }>
+              {title}
+            </Text>
+          </CardSection>
         </View>
-      </CardSection>
+      </TouchableWithoutFeedback>
     );
   }
 
@@ -24,13 +36,14 @@ class ListItem extends Component {
 
 const styles = {
   titleTextStyle: {
-    fontSize: 20
-  },
-  titleContainerStyle: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'center'
+    fontSize: 20,
+    paddingLeft: 20
   }
 };
 
-export default ListItem;
+// use mapStateToProps whenever a component needs to consume application level state
+const mapStateToProps = () => {
+
+};
+
+export default connect(mapStateToProps, actions)(ListItem);
